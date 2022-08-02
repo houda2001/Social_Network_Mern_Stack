@@ -1,0 +1,32 @@
+{
+  "name": "socialnetwork",
+  "version": "1.0.0",
+  "description": "Build and deploy a social network with Node.js, Express, React, Redux & MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/houda2001/Social_Network_Mern_Stack-.git"
+  },
+  "author": "houda karam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/houda2001/Social_Network_Mern_Stack-/issues"
+  },
+  "homepage": "https://github.com/houda2001/Social_Network_Mern_Stack-#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.7",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "gravatar": "^1.8.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.0",
+    "nodemon": "^2.0.19",
+    "request": "^2.88.2"
+  }
+}
