@@ -13,6 +13,6 @@ check('password','please include a password with minimum 6 characters').isLength
    if(!errors.isEmpty()){
     return res.status(400).json({errors:errors.array()})
    }
-   res.send("user")
+   res.send("user routed")
 })
 module.exports=router
