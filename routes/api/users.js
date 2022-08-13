@@ -5,11 +5,7 @@ const gravatar = require("gravatar");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
-//@route  post  api/users
-//@ desc  register user
-//@access public(we don't need token for access)
-//donc /api/users ca va etre ajouter a this slach
-//   localhost:5000/api/users
+
 router.post(
   "/",
   check("name", "Name is required").notEmpty(),
@@ -50,8 +46,8 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
       await user.save();
+      
       //return the jwt
-
       const payload={
         user:{
           id:user.id
