@@ -21,15 +21,13 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
+
+
 router.post(
   "/",
-  [
     auth,
-    [
       check("status", "You're status is required").notEmpty(),
       check("skills", "Skills are required").notEmpty(),
-    ],
-  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -37,15 +35,18 @@ router.post(
     }
     // destructure the request
     const {
+      company,
       website,
+      location,
+      bio,
+      status,
+      githubusername,
       skills,
       youtube,
       twitter,
       instagram,
       linkedin,
       facebook,
-      // spread the rest of the fields we don't need to check
-      ...rest
     } = req.body;
 
     const profileFields = {};
@@ -59,28 +60,50 @@ router.post(
     if (skills) {
       profileFields.skills = skills.split(",").map((skill) => skill.trim());
     }
-    ProfileFields.social = {};
-    if (youtube) ProfileFields.social.youtube = youtube;
-    if (facebook) ProfileFields.social.facebook = facebook;
-    if (twitter) ProfileFields.social.twitter = twitter;
-    if (linkedin) ProfileFields.social.linkedin = linkedin;
-    if (instagram) ProfileFields.social.instagram = instagram;
+    profileFields.social = {};
+    if (youtube) profileFields.social.youtube = youtube;
+    if (facebook) profileFields.social.facebook = facebook;
+    if (twitter) profileFields.social.twitter = twitter;
+    if (linkedin) profileFields.social.linkedin = linkedin;
+    if (instagram) profileFields.social.instagram = instagram;
 
     //Update the profileFields if the profile exist
 
-    const profile = await Profile.findOne({ user: req.user.id });
+    let profile = await Profile.findOne({ user: req.user.id });
     try {
       if (profile) {
-        profile = await Profile.findByIdAndUpdate(
+        profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
-          { $set: ProfileFields },
+          { $set: profileFields },
           { new: true }
         );
         return res.json(profile);
       }
-      profile = await new Profile(ProfileFields);
+      profile = new Profile(profileFields);
+      await profile.save();
       res.json(profile)
 
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
   }
 );
+
+router.get('/all',
+auth,
+async(req,res)=>{
+  const profiles =await Profile.find()
+  try {
+    if(!profiles){
+      res.status(404).json({msg:"No profile was created"})
+    }
+    res.status(200).json(profiles)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({msg:"Server error"});
+  }
+
+}
+)
+
+module.exports=router
